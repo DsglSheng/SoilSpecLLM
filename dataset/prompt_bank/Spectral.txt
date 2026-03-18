@@ -1,0 +1,1 @@
+Spectral have wavelengths between 400-2499 nanometers, covering five categories: vegetation, soil, rock minerals, water bodies, and artificial materials. The reflectance values range between 0-1.

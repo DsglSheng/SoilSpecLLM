@@ -1,0 +1,65 @@
+# Python cache and virtual env
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environment and logs
+.env
+.env.*
+*.log
+*.tmp
+*.bak
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Training artifacts
+checkpoints/
+scripts/checkpoints/
+runs/
+results/
+wandb/
+mlruns/
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+
+# Model caches and downloads
+pretrained_models/
+.cache/
+.huggingface/
+
+# Generated visualization outputs
+visual/
+visual_enhanced/
+visual_llama2_*/
+visual_bge_m3_*/
+visual_t5_*/
+visual_results.zip
+
+# Large local data not suitable for standard GitHub push
+dataset/spectral/spectral_data.csv
+dataset/spectral/spectral_data1.csv
+dataset/m4/training.npz
+dataset/solar_AL.txt
+dataset/traffic.csv
+
+# Paper code repo: ignore datasets by default, keep only prompt templates
+dataset/**
+!dataset/prompt_bank/
+!dataset/prompt_bank/*.txt
+
+# Optional local ops scripts (not core paper code)
+check-timellm311/
