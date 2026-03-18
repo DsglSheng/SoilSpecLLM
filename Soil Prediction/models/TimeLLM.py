@@ -1,4 +1,4 @@
-from math import sqrt
+﻿from math import sqrt
 
 import torch
 import torch.nn as nn
@@ -42,14 +42,14 @@ class Model(nn.Module):
 
         if configs.llm_model == 'LLAMA':
             # self.llama_config = LlamaConfig.from_pretrained('/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/')
-            self.llama_config = LlamaConfig.from_pretrained('/home/user/WangS/ChatTime-main/llama2_7b_hf')
+            self.llama_config = LlamaConfig.from_pretrained('meta-llama/Llama-2-7b-hf')
             self.llama_config.num_hidden_layers = configs.llm_layers
             self.llama_config.output_attentions = True
             self.llama_config.output_hidden_states = True
             try:
                 self.llm_model = LlamaModel.from_pretrained(
                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/",
-                    '/home/user/WangS/ChatTime-main/llama2_7b_hf',
+                    'meta-llama/Llama-2-7b-hf',
                     trust_remote_code=True,
                     local_files_only=True,
                     config=self.llama_config,
@@ -59,7 +59,7 @@ class Model(nn.Module):
                 print("Local model files not found. Attempting to download...")
                 self.llm_model = LlamaModel.from_pretrained(
                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/",
-                    '/home/user/WangS/ChatTime-main/llama2_7b_hf',
+                    'meta-llama/Llama-2-7b-hf',
                     trust_remote_code=True,
                     local_files_only=False,
                     config=self.llama_config,
@@ -68,7 +68,7 @@ class Model(nn.Module):
             try:
                 self.tokenizer = LlamaTokenizer.from_pretrained(
                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/tokenizer.model",
-                    '/home/user/WangS/ChatTime-main/llama2_7b_hf',
+                    'meta-llama/Llama-2-7b-hf',
                     trust_remote_code=True,
                     local_files_only=True
                 )
@@ -76,19 +76,19 @@ class Model(nn.Module):
                 print("Local tokenizer files not found. Atempting to download them..")
                 self.tokenizer = LlamaTokenizer.from_pretrained(
                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/tokenizer.model",
-                    '/home/user/WangS/ChatTime-main/llama2_7b_hf',
+                    'meta-llama/Llama-2-7b-hf',
                     trust_remote_code=True,
                     local_files_only=False
                 )
         elif configs.llm_model == 'GPT2':
-            self.gpt2_config = GPT2Config.from_pretrained('/home/user/WangS/ChatTime-main/gpt2')
+            self.gpt2_config = GPT2Config.from_pretrained('gpt2')
 
             self.gpt2_config.num_hidden_layers = configs.llm_layers
             self.gpt2_config.output_attentions = True
             self.gpt2_config.output_hidden_states = True
             try:
                 self.llm_model = GPT2Model.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/gpt2',
+                    'gpt2',
                     trust_remote_code=True,
                     local_files_only=True,
                     config=self.gpt2_config,
@@ -96,7 +96,7 @@ class Model(nn.Module):
             except EnvironmentError:  # downloads model from HF is not already done
                 print("Local model files not found. Attempting to download...")
                 self.llm_model = GPT2Model.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/gpt2',
+                    'gpt2',
                     trust_remote_code=True,
                     local_files_only=False,
                     config=self.gpt2_config,
@@ -104,26 +104,26 @@ class Model(nn.Module):
 
             try:
                 self.tokenizer = GPT2Tokenizer.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/gpt2',
+                    'gpt2',
                     trust_remote_code=True,
                     local_files_only=True
                 )
             except EnvironmentError:  # downloads the tokenizer from HF if not already done
                 print("Local tokenizer files not found. Atempting to download them..")
                 self.tokenizer = GPT2Tokenizer.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/gpt2',
+                    'gpt2',
                     trust_remote_code=True,
                     local_files_only=False
                 )
         elif configs.llm_model == 'BERT':
-            self.bert_config = BertConfig.from_pretrained('/home/user/WangS/ChatTime-main/bert')
+            self.bert_config = BertConfig.from_pretrained('bert-base-uncased')
 
             self.bert_config.num_hidden_layers = configs.llm_layers
             self.bert_config.output_attentions = True
             self.bert_config.output_hidden_states = True
             try:
                 self.llm_model = BertModel.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/bert',
+                    'bert-base-uncased',
                     trust_remote_code=True,
                     local_files_only=True,
                     config=self.bert_config,
@@ -131,7 +131,7 @@ class Model(nn.Module):
             except EnvironmentError:  # downloads model from HF is not already done
                 print("Local model files not found. Attempting to download...")
                 self.llm_model = BertModel.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/bert',
+                    'bert-base-uncased',
                     trust_remote_code=True,
                     local_files_only=False,
                     config=self.bert_config,
@@ -139,26 +139,26 @@ class Model(nn.Module):
 
             try:
                 self.tokenizer = BertTokenizer.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/bert',
+                    'bert-base-uncased',
                     trust_remote_code=True,
                     local_files_only=True
                 )
             except EnvironmentError:  # downloads the tokenizer from HF if not already done
                 print("Local tokenizer files not found. Atempting to download them..")
                 self.tokenizer = BertTokenizer.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/bert',
+                    'bert-base-uncased',
                     trust_remote_code=True,
                     local_files_only=False
                 )
         elif configs.llm_model == 'BGE-M3':
-            self.bge_config = XLMRobertaConfig.from_pretrained('/home/user/WangS/ChatTime-main/bge-m3')
+            self.bge_config = XLMRobertaConfig.from_pretrained('BAAI/bge-m3')
 
             self.bge_config.num_hidden_layers = configs.llm_layers
             self.bge_config.output_attentions = True
             self.bge_config.output_hidden_states = True
             try:
                 self.llm_model = XLMRobertaModel.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/bge-m3',
+                    'BAAI/bge-m3',
                     trust_remote_code=True,
                     local_files_only=True,
                     config=self.bge_config,
@@ -166,7 +166,7 @@ class Model(nn.Module):
             except EnvironmentError:  # downloads model from HF is not already done
                 print("Local model files not found. Attempting to download...")
                 self.llm_model = XLMRobertaModel.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/bge-m3',
+                    'BAAI/bge-m3',
                     trust_remote_code=True,
                     local_files_only=False,
                     config=self.bge_config,
@@ -174,26 +174,26 @@ class Model(nn.Module):
 
             try:
                 self.tokenizer = XLMRobertaTokenizer.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/bge-m3',
+                    'BAAI/bge-m3',
                     trust_remote_code=True,
                     local_files_only=True
                 )
             except EnvironmentError:  # downloads the tokenizer from HF if not already done
                 print("Local tokenizer files not found. Atempting to download them..")
                 self.tokenizer = XLMRobertaTokenizer.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/bge-m3',
+                    'BAAI/bge-m3',
                     trust_remote_code=True,
                     local_files_only=False
                 )
         elif configs.llm_model == 'T5':
-            self.t5_config = T5Config.from_pretrained('/home/user/WangS/ChatTime-main/t5-base')
+            self.t5_config = T5Config.from_pretrained('t5-base')
 
             self.t5_config.num_layers = configs.llm_layers
             self.t5_config.output_attentions = True
             self.t5_config.output_hidden_states = True
             try:
                 self.llm_model = T5EncoderModel.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/t5-base',
+                    't5-base',
                     trust_remote_code=True,
                     local_files_only=True,
                     config=self.t5_config,
@@ -201,7 +201,7 @@ class Model(nn.Module):
             except EnvironmentError:  # downloads model from HF is not already done
                 print("Local model files not found. Attempting to download...")
                 self.llm_model = T5EncoderModel.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/t5-base',
+                    't5-base',
                     trust_remote_code=True,
                     local_files_only=False,
                     config=self.t5_config,
@@ -209,14 +209,14 @@ class Model(nn.Module):
 
             try:
                 self.tokenizer = T5Tokenizer.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/t5-base',
+                    't5-base',
                     trust_remote_code=True,
                     local_files_only=True
                 )
             except EnvironmentError:  # downloads the tokenizer from HF if not already done
                 print("Local tokenizer files not found. Atempting to download them..")
                 self.tokenizer = T5Tokenizer.from_pretrained(
-                    '/home/user/WangS/ChatTime-main/t5-base',
+                    't5-base',
                     trust_remote_code=True,
                     local_files_only=False
                 )
@@ -270,11 +270,10 @@ class Model(nn.Module):
     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
 
         x_enc = self.normalize_layers(x_enc, 'norm')
-        # B是批次大小，T是时间序列长度，N是变量数量
-        B, T, N = x_enc.size()
+        # B鏄壒娆″ぇ灏忥紝T鏄椂闂村簭鍒楅暱搴︼紝N鏄彉閲忔暟閲?        B, T, N = x_enc.size()
         x_enc = x_enc.permute(0, 2, 1).contiguous().reshape(B * N, T, 1)
 
-        # 计算了时间序列的关键统计特征：最小值，最大值，中位数，自相关滞后值（通过calcute_lags方法），趋势（通过计算差分和判断正负）
+        # 璁＄畻浜嗘椂闂村簭鍒楃殑鍏抽敭缁熻鐗瑰緛锛氭渶灏忓€硷紝鏈€澶у€硷紝涓綅鏁帮紝鑷浉鍏虫粸鍚庡€硷紙閫氳繃calcute_lags鏂规硶锛夛紝瓒嬪娍锛堥€氳繃璁＄畻宸垎鍜屽垽鏂璐燂級
         min_values = torch.min(x_enc, dim=1)[0]
         max_values = torch.max(x_enc, dim=1)[0]
         medians = torch.median(x_enc, dim=1).values
@@ -300,25 +299,23 @@ class Model(nn.Module):
 
             prompt.append(prompt_)
 
-        # 恢复原始维度
+        # 鎭㈠鍘熷缁村害
         x_enc = x_enc.reshape(B, N, T).permute(0, 2, 1).contiguous()
 
-        # 将提示转换为token并获取嵌入
-        prompt = self.tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=2048).input_ids
+        # 灏嗘彁绀鸿浆鎹负token骞惰幏鍙栧祵鍏?        prompt = self.tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=2048).input_ids
         prompt_embeddings = self.llm_model.get_input_embeddings()(prompt.to(x_enc.device))  # (batch, prompt_token, dim)
 
-        # 获取源嵌入
-        source_embeddings = self.mapping_layer(self.word_embeddings.permute(1, 0)).permute(1, 0)
+        # 鑾峰彇婧愬祵鍏?        source_embeddings = self.mapping_layer(self.word_embeddings.permute(1, 0)).permute(1, 0)
 
-        # 补丁嵌入
+        # 琛ヤ竵宓屽叆
         x_enc = x_enc.permute(0, 2, 1).contiguous()
         enc_out, n_vars = self.patch_embedding(x_enc.to(torch.bfloat16))
 
-        # 通过重编程层处理嵌入
+        # 閫氳繃閲嶇紪绋嬪眰澶勭悊宓屽叆
         enc_out = self.reprogramming_layer(enc_out, source_embeddings, source_embeddings)
         llama_enc_out = torch.cat([prompt_embeddings, enc_out], dim=1)
 
-        # 通过重编程层处理嵌入
+        # 閫氳繃閲嶇紪绋嬪眰澶勭悊宓屽叆
         dec_out = self.llm_model(inputs_embeds=llama_enc_out).last_hidden_state
         dec_out = dec_out[:, :, :self.d_ff]
 
@@ -333,8 +330,7 @@ class Model(nn.Module):
 
         return dec_out
 
-    # 使用FFT（快速傅里叶变换）计算自相关函数，然后提取top-k的滞后值
-    def calcute_lags(self, x_enc):
+    # 浣跨敤FFT锛堝揩閫熷倕閲屽彾鍙樻崲锛夎绠楄嚜鐩稿叧鍑芥暟锛岀劧鍚庢彁鍙杢op-k鐨勬粸鍚庡€?    def calcute_lags(self, x_enc):
         q_fft = torch.fft.rfft(x_enc.permute(0, 2, 1).contiguous(), dim=-1)
         k_fft = torch.fft.rfft(x_enc.permute(0, 2, 1).contiguous(), dim=-1)
         res = q_fft * torch.conj(k_fft)
@@ -345,8 +341,7 @@ class Model(nn.Module):
 
 
 class ReprogrammingLayer(nn.Module):
-    # 核心创新点，文本与时间序列对齐
-    def __init__(self, d_model, n_heads, d_keys=None, d_llm=None, attention_dropout=0.1):
+    # 鏍稿績鍒涙柊鐐癸紝鏂囨湰涓庢椂闂村簭鍒楀榻?    def __init__(self, d_model, n_heads, d_keys=None, d_llm=None, attention_dropout=0.1):
         super(ReprogrammingLayer, self).__init__()
 
         d_keys = d_keys or (d_model // n_heads)
@@ -374,34 +369,30 @@ class ReprogrammingLayer(nn.Module):
         return self.out_projection(out)
 
     def reprogramming(self, target_embedding, source_embedding, value_embedding):
-        # 将时间序列特征与LLM的词嵌入空间对齐
+        # 灏嗘椂闂村簭鍒楃壒寰佷笌LLM鐨勮瘝宓屽叆绌洪棿瀵归綈
 
-        # b: batch size（批次大小）
-        # l: length（序列长度，这里是目标嵌入的长度）
-        # h: heads（注意力头数量）
-        # e: embedding dimension（每个头的嵌入维度）
-        # s: source length（源嵌入的长度）
+        # b: batch size锛堟壒娆″ぇ灏忥級
+        # l: length锛堝簭鍒楅暱搴︼紝杩欓噷鏄洰鏍囧祵鍏ョ殑闀垮害锛?        # h: heads锛堟敞鎰忓姏澶存暟閲忥級
+        # e: embedding dimension锛堟瘡涓ご鐨勫祵鍏ョ淮搴︼級
+        # s: source length锛堟簮宓屽叆鐨勯暱搴︼級
         B, L, H, E = target_embedding.shape
 
         scale = 1. / sqrt(E)
 
-        # 计算注意力分数
-        # 将 target_embedding (形状为 [batch_size, target_length, num_heads, head_dim]) 与 source_embedding (形状为 [source_length, num_heads, head_dim]) 进行矩阵乘法
-        # 具体来说，它对e维度进行求和，这是因为e在输出中消失了，表示在这个维度上进行点积操作
-        # 最终得到形状为[batch_size, num_heads, target_length, source_length]的注意力分数矩阵
-        # 这个操作本质上是在计算注意力机制中的查询(query)和键(key)之间的相似度分数。在自注意力机制中，这一步骤用于确定序列中不同位置之间的关联强度。
-        scores = torch.einsum("blhe,she->bhls", target_embedding, source_embedding)
+        # 璁＄畻娉ㄦ剰鍔涘垎鏁?        # 灏?target_embedding (褰㈢姸涓?[batch_size, target_length, num_heads, head_dim]) 涓?source_embedding (褰㈢姸涓?[source_length, num_heads, head_dim]) 杩涜鐭╅樀涔樻硶
+        # 鍏蜂綋鏉ヨ锛屽畠瀵筫缁村害杩涜姹傚拰锛岃繖鏄洜涓篹鍦ㄨ緭鍑轰腑娑堝け浜嗭紝琛ㄧず鍦ㄨ繖涓淮搴︿笂杩涜鐐圭Н鎿嶄綔
+        # 鏈€缁堝緱鍒板舰鐘朵负[batch_size, num_heads, target_length, source_length]鐨勬敞鎰忓姏鍒嗘暟鐭╅樀
+        # 杩欎釜鎿嶄綔鏈川涓婃槸鍦ㄨ绠楁敞鎰忓姏鏈哄埗涓殑鏌ヨ(query)鍜岄敭(key)涔嬮棿鐨勭浉浼煎害鍒嗘暟銆傚湪鑷敞鎰忓姏鏈哄埗涓紝杩欎竴姝ラ鐢ㄤ簬纭畾搴忓垪涓笉鍚屼綅缃箣闂寸殑鍏宠仈寮哄害銆?        scores = torch.einsum("blhe,she->bhls", target_embedding, source_embedding)
 
         A = self.dropout(torch.softmax(scale * scores, dim=-1))
-        # 计算加权和
-        reprogramming_embedding = torch.einsum("bhls,she->blhe", A, value_embedding)
+        # 璁＄畻鍔犳潈鍜?        reprogramming_embedding = torch.einsum("bhls,she->blhe", A, value_embedding)
 
         return reprogramming_embedding
 
 
 
 
-# 消融实验
+# 娑堣瀺瀹為獙
 # from math import sqrt
 # 
 # import torch
@@ -446,14 +437,14 @@ class ReprogrammingLayer(nn.Module):
 # 
 #         if configs.llm_model == 'LLAMA':
 #             # self.llama_config = LlamaConfig.from_pretrained('/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/')
-#             self.llama_config = LlamaConfig.from_pretrained('/home/user/WangS/ChatTime-main/llama2_7b_hf')
+#             self.llama_config = LlamaConfig.from_pretrained('meta-llama/Llama-2-7b-hf')
 #             self.llama_config.num_hidden_layers = configs.llm_layers
 #             self.llama_config.output_attentions = True
 #             self.llama_config.output_hidden_states = True
 #             try:
 #                 self.llm_model = LlamaModel.from_pretrained(
 #                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/",
-#                     '/home/user/WangS/ChatTime-main/llama2_7b_hf',
+#                     'meta-llama/Llama-2-7b-hf',
 #                     trust_remote_code=True,
 #                     local_files_only=True,
 #                     config=self.llama_config,
@@ -463,7 +454,7 @@ class ReprogrammingLayer(nn.Module):
 #                 print("Local model files not found. Attempting to download...")
 #                 self.llm_model = LlamaModel.from_pretrained(
 #                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/",
-#                     '/home/user/WangS/ChatTime-main/llama2_7b_hf',
+#                     'meta-llama/Llama-2-7b-hf',
 #                     trust_remote_code=True,
 #                     local_files_only=False,
 #                     config=self.llama_config,
@@ -472,7 +463,7 @@ class ReprogrammingLayer(nn.Module):
 #             try:
 #                 self.tokenizer = LlamaTokenizer.from_pretrained(
 #                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/tokenizer.model",
-#                     '/home/user/WangS/ChatTime-main/llama2_7b_hf',
+#                     'meta-llama/Llama-2-7b-hf',
 #                     trust_remote_code=True,
 #                     local_files_only=True
 #                 )
@@ -480,7 +471,7 @@ class ReprogrammingLayer(nn.Module):
 #                 print("Local tokenizer files not found. Atempting to download them..")
 #                 self.tokenizer = LlamaTokenizer.from_pretrained(
 #                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/tokenizer.model",
-#                     '/home/user/WangS/ChatTime-main/llama2_7b_hf',
+#                     'meta-llama/Llama-2-7b-hf',
 #                     trust_remote_code=True,
 #                     local_files_only=False
 #                 )
@@ -577,14 +568,14 @@ class ReprogrammingLayer(nn.Module):
 #         self.patch_embedding = PatchEmbedding(
 #             configs.d_model, self.patch_len, self.stride, configs.dropout)
 # 
-#         # 去掉patch-programming相关组件
+#         # 鍘绘帀patch-programming鐩稿叧缁勪欢
 #         # self.word_embeddings = self.llm_model.get_input_embeddings().weight
 #         # self.vocab_size = self.word_embeddings.shape[0]
 #         # self.num_tokens = 1000
 #         # self.mapping_layer = nn.Linear(self.vocab_size, self.num_tokens)
 #         # self.reprogramming_layer = ReprogrammingLayer(configs.d_model, configs.n_heads, self.d_ff, self.d_llm)
 # 
-#         # 直接使用简单的线性映射替代patch-programming
+#         # 鐩存帴浣跨敤绠€鍗曠殑绾挎€ф槧灏勬浛浠atch-programming
 #         self.direct_mapping = nn.Linear(configs.d_model, self.d_llm)
 # 
 #         self.patch_nums = int((configs.seq_len - self.patch_len) / self.stride + 2)
@@ -607,11 +598,10 @@ class ReprogrammingLayer(nn.Module):
 #     def forecast(self, x_enc, x_mark_enc, x_dec, x_mark_dec):
 # 
 #         x_enc = self.normalize_layers(x_enc, 'norm')
-#         # B是批次大小，T是时间序列长度，N是变量数量
-#         B, T, N = x_enc.size()
+#         # B鏄壒娆″ぇ灏忥紝T鏄椂闂村簭鍒楅暱搴︼紝N鏄彉閲忔暟閲?#         B, T, N = x_enc.size()
 #         x_enc = x_enc.permute(0, 2, 1).contiguous().reshape(B * N, T, 1)
 # 
-#         # 计算了时间序列的关键统计特征：最小值，最大值，中位数，自相关滞后值（通过calcute_lags方法），趋势（通过计算差分和判断正负）
+#         # 璁＄畻浜嗘椂闂村簭鍒楃殑鍏抽敭缁熻鐗瑰緛锛氭渶灏忓€硷紝鏈€澶у€硷紝涓綅鏁帮紝鑷浉鍏虫粸鍚庡€硷紙閫氳繃calcute_lags鏂规硶锛夛紝瓒嬪娍锛堥€氳繃璁＄畻宸垎鍜屽垽鏂璐燂級
 #         min_values = torch.min(x_enc, dim=1)[0]
 #         max_values = torch.max(x_enc, dim=1)[0]
 #         medians = torch.median(x_enc, dim=1).values
@@ -637,24 +627,23 @@ class ReprogrammingLayer(nn.Module):
 # 
 #             prompt.append(prompt_)
 # 
-#         # 恢复原始维度
+#         # 鎭㈠鍘熷缁村害
 #         x_enc = x_enc.reshape(B, N, T).permute(0, 2, 1).contiguous()
 # 
-#         # 将提示转换为token并获取嵌入
-#         prompt = self.tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=2048).input_ids
+#         # 灏嗘彁绀鸿浆鎹负token骞惰幏鍙栧祵鍏?#         prompt = self.tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=2048).input_ids
 #         prompt_embeddings = self.llm_model.get_input_embeddings()(prompt.to(x_enc.device))  # (batch, prompt_token, dim)
 # 
-#         # 补丁嵌入
+#         # 琛ヤ竵宓屽叆
 #         x_enc = x_enc.permute(0, 2, 1).contiguous()
 #         enc_out, n_vars = self.patch_embedding(x_enc.to(torch.bfloat16))
 # 
-#         # 直接线性映射替代patch-programming
+#         # 鐩存帴绾挎€ф槧灏勬浛浠atch-programming
 #         enc_out = self.direct_mapping(enc_out)
 # 
-#         # 将提示嵌入和输入特征嵌入连接起来
+#         # 灏嗘彁绀哄祵鍏ュ拰杈撳叆鐗瑰緛宓屽叆杩炴帴璧锋潵
 #         llama_enc_out = torch.cat([prompt_embeddings, enc_out], dim=1)
 # 
-#         # 使用LLM处理输入
+#         # 浣跨敤LLM澶勭悊杈撳叆
 #         dec_out = self.llm_model(inputs_embeds=llama_enc_out).last_hidden_state
 #         dec_out = dec_out[:, :, :self.d_ff]
 # 
@@ -669,8 +658,7 @@ class ReprogrammingLayer(nn.Module):
 # 
 #         return dec_out
 # 
-#     # 使用FFT（快速傅里叶变换）计算自相关函数，然后提取top-k的滞后值
-#     def calcute_lags(self, x_enc):
+#     # 浣跨敤FFT锛堝揩閫熷倕閲屽彾鍙樻崲锛夎绠楄嚜鐩稿叧鍑芥暟锛岀劧鍚庢彁鍙杢op-k鐨勬粸鍚庡€?#     def calcute_lags(self, x_enc):
 #         q_fft = torch.fft.rfft(x_enc.permute(0, 2, 1).contiguous(), dim=-1)
 #         k_fft = torch.fft.rfft(x_enc.permute(0, 2, 1).contiguous(), dim=-1)
 #         res = q_fft * torch.conj(k_fft)
@@ -679,4 +667,4 @@ class ReprogrammingLayer(nn.Module):
 #         _, lags = torch.topk(mean_value, self.top_k, dim=-1)
 #         return lags
 # 
-# # 删除ReprogrammingLayer类，因为在消融实验中不需要
+# # 鍒犻櫎ReprogrammingLayer绫伙紝鍥犱负鍦ㄦ秷铻嶅疄楠屼腑涓嶉渶瑕

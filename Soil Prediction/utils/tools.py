@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import matplotlib.pyplot as plt
 import shutil
+import os
 
 from tqdm import tqdm
 
@@ -228,6 +229,12 @@ def load_content(args):
         file = 'ETT'
     else:
         file = args.data
-    with open('/home/user/WangS/Time-LLM-main/dataset/prompt_bank/{0}.txt'.format(file), 'r') as f:
+    prompt_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        'dataset',
+        'prompt_bank',
+        '{0}.txt'.format(file)
+    )
+    with open(prompt_path, 'r', encoding='utf-8') as f:
         content = f.read()
     return content
