@@ -48,6 +48,14 @@ visual_llama2_*/
 visual_bge_m3_*/
 visual_t5_*/
 visual_results.zip
+*.zip
+
+# Result graphs and local docs images
+data loader*.png
+*.jpg
+*.jpeg
+*.svg
+figures/
 
 # Large local data not suitable for standard GitHub push
 dataset/spectral/spectral_data.csv
