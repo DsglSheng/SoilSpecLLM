@@ -1,4 +1,4 @@
-import os
+﻿import os
 import tqdm
 
 import torch
@@ -12,7 +12,7 @@ import wfdb
 from wfdb import processing
 
 
-class MIMIC_IV_ECG_Dataset(Dataset):
+class soil_gen_Dataset(Dataset):
     def __init__(self,
                  dataset_path: str, 
                  usage: str='all', 
@@ -141,7 +141,7 @@ class MIMIC_IV_ECG_Dataset(Dataset):
         return len(self.sheet)
        
 
-class VAE_MIMIC_IV_ECG_Dataset(Dataset):
+class VAE_soil_gen_Dataset(Dataset):
     def __init__(self, path:str, usage='all'):
         self.path = path
         self.file_list = os.listdir(path)
@@ -182,12 +182,12 @@ class DictDataset(Dataset):
 if __name__ == '__main__':
     # Original dataset
     # path = '/data/0shared/MIMIC/physionet.org/files/mimic-iv-ecg/1.0/mimic-iv-ecg-diagnostic-electrocardiogram-matched-subset-1.0'
-    # data = MIMIC_IV_ECG_Dataset(dataset_path=path, resample_length=1024, demo_label=True)
+    # data = soil_gen_Dataset(dataset_path=path, resample_length=1024, demo_label=True)
 
     # VAE encoded dataset 
     # vae_path = '/data/0shared/laiyongfan/data_text2ecg/mimic_vae_lite.pt'
     vae_path = 'mimic_vae.pt'
-    # data = VAE_MIMIC_IV_ECG_Dataset(vae_path, usage='test')
+    # data = VAE_soil_gen_Dataset(vae_path, usage='test')
     data = DictDataset(vae_path)
 
     # print(len(data))
@@ -200,3 +200,4 @@ if __name__ == '__main__':
     # test reading speed
     for idx, (X, y) in enumerate(tqdm.tqdm(data)):
         pass
+

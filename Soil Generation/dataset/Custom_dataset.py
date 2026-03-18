@@ -1,4 +1,4 @@
-import pandas as pd
+﻿import pandas as pd
 import numpy as np
 from torch.utils.data import Dataset
 from scipy import signal
@@ -6,35 +6,35 @@ import ast
 
 class CustomVAEDataset(Dataset):
     def __init__(self, csv_file, num_folds=5, test_fold=None, split='train', resample_length=None):
-        # 读取 CSV 文件
+        # 璇诲彇 CSV 鏂囦欢
         df = pd.read_csv(csv_file)
 
-        # 解析 'Processed Data' 列：将每行的空格分隔字符串转为长度2100的float32数组
+        # 瑙ｆ瀽 'Processed Data' 鍒楋細灏嗘瘡琛岀殑绌烘牸鍒嗛殧瀛楃涓茶浆涓洪暱搴?100鐨刦loat32鏁扮粍
         sequences = []
         for data_str in df['Processed Data']:
-            # 将字符串拆分为浮点数列表并转换为 float32 数组
+            # 灏嗗瓧绗︿覆鎷嗗垎涓烘诞鐐规暟鍒楄〃骞惰浆鎹负 float32 鏁扮粍
             seq = np.array(data_str.split(), dtype=np.float32)
-            # 确保序列长度为2100，如不足则填充0，超出则截断
+            # 纭繚搴忓垪闀垮害涓?100锛屽涓嶈冻鍒欏～鍏?锛岃秴鍑哄垯鎴柇
             if len(seq) != 2100:
                 if len(seq) < 2100:
                     seq = np.pad(seq, (0, 2100 - len(seq)), mode='constant', constant_values=0)
                 else:
-                    # print("正在进行截断")
+                    # print("姝ｅ湪杩涜鎴柇")
                     seq = seq[-2100:].astype(np.float32)
             sequences.append(seq)
-        # 将列表转换为numpy数组 (形状: [样本数, 2100])
+        # 灏嗗垪琛ㄨ浆鎹负numpy鏁扮粍 (褰㈢姸: [鏍锋湰鏁? 2100])
         sequences = np.stack(sequences)
 
-        # 如果指定了重采样长度，则对每条序列进行重采样至新长度
+        # 濡傛灉鎸囧畾浜嗛噸閲囨牱闀垮害锛屽垯瀵规瘡鏉″簭鍒楄繘琛岄噸閲囨牱鑷虫柊闀垮害
         if resample_length is not None:
             resampled_sequences = []
             for seq in sequences:
-                # 使用 SciPy 的信号重采样函数调整序列长度
+                # 浣跨敤 SciPy 鐨勪俊鍙烽噸閲囨牱鍑芥暟璋冩暣搴忓垪闀垮害
                 new_seq = signal.resample(seq, resample_length)
                 resampled_sequences.append(new_seq.astype(np.float32))
             sequences = np.stack(resampled_sequences)
 
-        # 定义需要提取的标签列
+        # 瀹氫箟闇€瑕佹彁鍙栫殑鏍囩鍒?
         # self.label_cols = [
         #     "Coarse", "Clay", "Sand", "Silt",
         #     "pH(CaCl2)", "pH(H2O)", "EC", "OC",
@@ -63,78 +63,78 @@ class CustomVAEDataset(Dataset):
 
         # labels_matrix = []
         # for label_cols in df['text_embed']:
-        #     # 将字符串拆分为浮点数列表并转换为 float32 数组
+        #     # 灏嗗瓧绗︿覆鎷嗗垎涓烘诞鐐规暟鍒楄〃骞惰浆鎹负 float32 鏁扮粍
         #     col = np.array(label_cols.split(), dtype=np.float)
         #     label_cols.append(col)
         # labels_matrix = np.stack(label_cols)
 
         # Processed Data, Coarse, Clay, Sand, Silt, pH(CaCl2), pH(H2O), OC, CaCO3, P, N, K
-        # 确保 DataFrame 包含所有标签列（若缺失则填充 NaN）
+        # 纭繚 DataFrame 鍖呭惈鎵€鏈夋爣绛惧垪锛堣嫢缂哄け鍒欏～鍏?NaN锛?
         for col in self.label_cols:
             if col not in df.columns:
                 df[col] = np.nan
-        # 4. 处理包含 Tensor 数据的列，将字符串表示的 Tensor 转换为 numpy 数组
+        # 4. 澶勭悊鍖呭惈 Tensor 鏁版嵁鐨勫垪锛屽皢瀛楃涓茶〃绀虹殑 Tensor 杞崲涓?numpy 鏁扮粍
 
         # def parse_tensor_string(x):
         #
         #     data_str = x.replace("[", "").replace("]", "").replace("...", "").strip()
-        #     # 将数值部分拆分为列表
+        #     # 灏嗘暟鍊奸儴鍒嗘媶鍒嗕负鍒楄〃
         #     values = data_str.split()
-        #     # 将列表转换为浮点数类型的 numpy 数组
+        #     # 灏嗗垪琛ㄨ浆鎹负娴偣鏁扮被鍨嬬殑 numpy 鏁扮粍
         #     tensor_data = np.array([float(value) for value in values], dtype=np.float32)
         #     print(tensor_data.shape)
         #     return tensor_data
         # for col in self.label_cols:
         #     df[col] = df[col].apply(parse_tensor_string)
 
-        # 提取标签数据为 numpy 矩阵（float32类型，缺失值为 NaN）
+        # 鎻愬彇鏍囩鏁版嵁涓?numpy 鐭╅樀锛坒loat32绫诲瀷锛岀己澶卞€间负 NaN锛?
         labels_matrix = df[self.label_cols].to_numpy(dtype=np.float32)
         # labels_matrix = df[self.label_cols]
         # labels_matrix = df[col]
-        # 准备索引列表，根据 K 折参数划分训练/测试集
+        # 鍑嗗绱㈠紩鍒楄〃锛屾牴鎹?K 鎶樺弬鏁板垝鍒嗚缁?娴嬭瘯闆?
         self.indices = list(range(len(df)))
         if test_fold is not None:
-            # 为每个样本指定折号
+            # 涓烘瘡涓牱鏈寚瀹氭姌鍙?
             if 'Point_ID' in df.columns:
-                # 若存在 Point_ID，则按唯一 Point_ID 分组划分折号，确保相同 Point_ID 的样本在同一折
+                # 鑻ュ瓨鍦?Point_ID锛屽垯鎸夊敮涓€ Point_ID 鍒嗙粍鍒掑垎鎶樺彿锛岀‘淇濈浉鍚?Point_ID 鐨勬牱鏈湪鍚屼竴鎶?
                 unique_ids = df['Point_ID'].unique()
                 id_to_fold = {pid: idx % num_folds for idx, pid in enumerate(unique_ids)}
                 sample_folds = [id_to_fold[pid] for pid in df['Point_ID']]
             else:
-                # 无 Point_ID 时，直接按顺序对索引取模指派折号
+                # 鏃?Point_ID 鏃讹紝鐩存帴鎸夐『搴忓绱㈠紩鍙栨ā鎸囨淳鎶樺彿
                 sample_folds = [i % num_folds for i in range(len(df))]
-            # 根据 split 参数过滤出训练或测试集的索引
+            # 鏍规嵁 split 鍙傛暟杩囨护鍑鸿缁冩垨娴嬭瘯闆嗙殑绱㈠紩
             if split == 'train':
                 self.indices = [i for i, fold in enumerate(sample_folds) if fold != test_fold]
             elif split == 'test':
                 self.indices = [i for i, fold in enumerate(sample_folds) if fold == test_fold]
             else:
-                raise ValueError("split 参数必须是 'train' 或 'test'")
+                raise ValueError("split 鍙傛暟蹇呴』鏄?'train' 鎴?'test'")
 
-        # 保存最终的序列数据和标签矩阵
-        self.data = sequences  # numpy 数组，形状: [N, 序列长度]
-        self.labels_matrix = labels_matrix  # numpy 数组，形状: [N, 13]
+        # 淇濆瓨鏈€缁堢殑搴忓垪鏁版嵁鍜屾爣绛剧煩闃?
+        self.data = sequences  # numpy 鏁扮粍锛屽舰鐘? [N, 搴忓垪闀垮害]
+        self.labels_matrix = labels_matrix  # numpy 鏁扮粍锛屽舰鐘? [N, 13]
 
     def __len__(self):
-        # 返回当前数据集包含的样本数量（根据划分后的 indices 列表）
+        # 杩斿洖褰撳墠鏁版嵁闆嗗寘鍚殑鏍锋湰鏁伴噺锛堟牴鎹垝鍒嗗悗鐨?indices 鍒楄〃锛?
         return len(self.indices)
 
     def __getitem__(self, idx):
-        # 获取实际样本索引
+        # 鑾峰彇瀹為檯鏍锋湰绱㈠紩
         actual_idx = self.indices[idx]
-        # 提取光谱序列数据
+        # 鎻愬彇鍏夎氨搴忓垪鏁版嵁
         x = self.data[actual_idx]
-        # 提取对应的标签值并构建字典
+        # 鎻愬彇瀵瑰簲鐨勬爣绛惧€煎苟鏋勫缓瀛楀吀
 
         label_values = self.labels_matrix[actual_idx]
         label_dict = {key: label_values[i] for i, key in enumerate(self.label_cols)}
         # label_dict = {key: label_values for i, key in enumerate(self.label_cols)}
-        # 返回光谱序列 x 以及标签字典 label_dict
+        # 杩斿洖鍏夎氨搴忓垪 x 浠ュ強鏍囩瀛楀吀 label_dict
         return x, label_dict
 if __name__ == '__main__':
     # Original dataset
     # path = '/data/0shared/MIMIC/physionet.org/files/mimic-iv-ecg/1.0/mimic-iv-ecg-diagnostic-electrocardiogram-matched-subset-1.0'
-    # data = MIMIC_IV_ECG_Dataset(dataset_path=path, resample_length=1024, demo_label=True)
+    # data = soil_gen_Dataset(dataset_path=path, resample_length=1024, demo_label=True)
 
     # VAE encoded dataset
     vae_path = '../prerequisites/LUCAS2015.csv'

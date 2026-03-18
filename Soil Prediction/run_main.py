@@ -1,4 +1,4 @@
-import argparse
+﻿import argparse
 import torch
 from accelerate import Accelerator, DeepSpeedPlugin
 from accelerate import DistributedDataParallelKwargs
@@ -6,7 +6,7 @@ from torch import nn, optim
 from torch.optim import lr_scheduler
 from tqdm import tqdm
 
-from models import Autoformer, DLinear, TimeLLM
+from models import Autoformer, DLinear, SoilSpecLLM
 
 from data_provider.data_factory import data_provider
 import time
@@ -19,7 +19,7 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:64"
 
 from utils.tools import del_files, EarlyStopping, adjust_learning_rate, vali, load_content
 
-parser = argparse.ArgumentParser(description='Time-LLM')
+parser = argparse.ArgumentParser(description='SoilSpecLLM')
 
 fix_seed = 2021
 random.seed(fix_seed)
@@ -134,7 +134,7 @@ for ii in range(args.itr):
     elif args.model == 'DLinear':
         model = DLinear.Model(args).float()
     else:
-        model = TimeLLM.Model(args).float()
+        model = SoilSpecLLM.Model(args).float()
 
     path = os.path.join(args.checkpoints,
                         setting + '-' + args.model_comment)  # unique checkpoint saving path
@@ -205,19 +205,17 @@ for ii in range(args.itr):
                     outputs = outputs[:, -args.pred_len:, f_dim:]
                     batch_y = batch_y[:, -args.pred_len:, f_dim:].to(accelerator.device)
 
-                    # 添加维度检查和调整代码
+                    # 娣诲姞缁村害妫€鏌ュ拰璋冩暣浠ｇ爜
                     if outputs.shape[1] != batch_y.shape[1]:
                         accelerator.print(
                             f"Warning: Output shape {outputs.shape} doesn't match target shape {batch_y.shape}")
                         import torch.nn.functional as F
 
                         if outputs.shape[1] > batch_y.shape[1]:
-                            # 如果模型输出比目标长，用零填充目标张量
-                            padding = (0, 0, 0, outputs.shape[1] - batch_y.shape[1], 0, 0)
+                            # 濡傛灉妯″瀷杈撳嚭姣旂洰鏍囬暱锛岀敤闆跺～鍏呯洰鏍囧紶閲?                            padding = (0, 0, 0, outputs.shape[1] - batch_y.shape[1], 0, 0)
                             batch_y = F.pad(batch_y, padding, "constant", 0)
                         else:
-                            # 如果目标比模型输出长，截断目标张量
-                            batch_y = batch_y[:, :outputs.shape[1], :]
+                            # 濡傛灉鐩爣姣旀ā鍨嬭緭鍑洪暱锛屾埅鏂洰鏍囧紶閲?                            batch_y = batch_y[:, :outputs.shape[1], :]
 
                     loss = criterion(outputs, batch_y)
                     train_loss.append(loss.item())
@@ -231,19 +229,17 @@ for ii in range(args.itr):
                 outputs = outputs[:, -args.pred_len:, f_dim:]
                 batch_y = batch_y[:, -args.pred_len:, f_dim:]
 
-                # 添加维度检查和调整代码
+                # 娣诲姞缁村害妫€鏌ュ拰璋冩暣浠ｇ爜
                 if outputs.shape[1] != batch_y.shape[1]:
                     accelerator.print(
                         f"Warning: Output shape {outputs.shape} doesn't match target shape {batch_y.shape}")
                     import torch.nn.functional as F
 
                     if outputs.shape[1] > batch_y.shape[1]:
-                        # 如果模型输出比目标长，用零填充目标张量
-                        padding = (0, 0, 0, outputs.shape[1] - batch_y.shape[1], 0, 0)
+                        # 濡傛灉妯″瀷杈撳嚭姣旂洰鏍囬暱锛岀敤闆跺～鍏呯洰鏍囧紶閲?                        padding = (0, 0, 0, outputs.shape[1] - batch_y.shape[1], 0, 0)
                         batch_y = F.pad(batch_y, padding, "constant", 0)
                     else:
-                        # 如果目标比模型输出长，截断目标张量
-                        batch_y = batch_y[:, :outputs.shape[1], :]
+                        # 濡傛灉鐩爣姣旀ā鍨嬭緭鍑洪暱锛屾埅鏂洰鏍囧紶閲?                        batch_y = batch_y[:, :outputs.shape[1], :]
 
                 loss = criterion(outputs, batch_y)
                 train_loss.append(loss.item())
@@ -298,8 +294,9 @@ for ii in range(args.itr):
 accelerator.wait_for_everyone()
 
 # if accelerator.is_local_main_process:
-#     # 只删除临时文件，保留最终模型
-#     temp_files = glob.glob('/home/user/WangS/Time-LLM-main/checkpoints/**/temp_*.pth', recursive=True)
+#     # 鍙垹闄や复鏃舵枃浠讹紝淇濈暀鏈€缁堟ā鍨?#     temp_files = glob.glob('/home/user/WangS/SoilSpecLLM-main/checkpoints/**/temp_*.pth', recursive=True)
 #     for file in temp_files:
 #         os.remove(file)
 #     accelerator.print('success delete temporary checkpoints')
+
+

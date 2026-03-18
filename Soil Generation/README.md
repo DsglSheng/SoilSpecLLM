@@ -11,7 +11,7 @@ Generate full soil reflectance spectra (400-2500 nm) from semantic soil-property
 - `train_soil_generation.py`: train diffusion model in latent space
 - `infer_soil_generation.py`: generate spectra and optional uncertainty analysis
 - `config/soil_generation.json`: training/inference configuration template
-- `dataset/mimic_iv_ecg_dataset.py`: `DictDataset` loader for latent+label dictionaries
+- `dataset/soil_gen_dataset.py`: `DictDataset` loader for latent+label dictionaries
 - `unet/`: conditional and non-conditional U-Net backbones
 - `utils/train.py`: diffusion training loop
 - `utils/inference_batch_png.py`: spectrum generation and evaluation visualization
@@ -35,3 +35,4 @@ python infer_soil_generation.py --config config/soil_generation.json --uncertain
 
 - This release keeps only code relevant to soil spectral generation.
 - Model weights, large datasets, and generated images are intentionally excluded.
+

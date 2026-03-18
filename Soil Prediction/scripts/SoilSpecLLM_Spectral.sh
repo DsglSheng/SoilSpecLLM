@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
-MODEL_NAME="TimeLLM"
+MODEL_NAME="SoilSpecLLM"
 TRAIN_EPOCHS=2
 LEARNING_RATE=0.0005
 LLM_LAYERS=8
@@ -42,3 +42,4 @@ accelerate launch \
   --train_epochs "${TRAIN_EPOCHS}" \
   --wavelength_range "${WAVELENGTH_MIN}" "${WAVELENGTH_MAX}" \
   --model_comment SoilSpecLLM-Spectral
+

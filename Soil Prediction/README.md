@@ -1,6 +1,6 @@
-# Soil Prediction
+﻿# Soil Prediction
 
-This folder contains the SoilSpecLLM spectral prediction package adapted from a Time-LLM style backbone for soil VNIR-SWIR reflectance forecasting.
+This folder contains the SoilSpecLLM spectral prediction package adapted from a SoilSpecLLM style backbone for soil VNIR-SWIR reflectance forecasting.
 
 ## Task Definition
 
@@ -18,7 +18,7 @@ This folder contains the SoilSpecLLM spectral prediction package adapted from a 
 
 - `run_main.py`: training and evaluation entry for spectral prediction
 - `models/`, `layers/`, `utils/`, `data_provider/`: core model and data pipeline
-- `scripts/TimeLLM_Spectral*.sh`: reproducible spectral experiments
+- `scripts/SoilSpecLLM_Spectral*.sh`: reproducible spectral experiments
 - `dataset/prompt_bank/`: prompt templates
 - `dataset/spectral/spectral_soil_test.csv`: lightweight example spectral file
 
@@ -33,7 +33,7 @@ pip install -r requirements.txt
 2. Run a baseline spectral prediction experiment:
 
 ```bash
-bash scripts/TimeLLM_Spectral.sh
+bash scripts/SoilSpecLLM_Spectral.sh
 ```
 
 ## Notes
@@ -41,4 +41,6 @@ bash scripts/TimeLLM_Spectral.sh
 - This release excludes large training libraries and generated visualization artifacts.
 - For paper-focused reproducibility, the package keeps only spectral prediction related components.
 - Spectral generation components will be added in a separate `Soil generation` folder.
+
+
 

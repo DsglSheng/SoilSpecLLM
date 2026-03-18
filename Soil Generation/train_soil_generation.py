@@ -6,7 +6,7 @@ import torch
 import pandas as pd 
 from torch.utils.data import DataLoader 
 from diffusers import DDPMScheduler
-from dataset.mimic_iv_ecg_dataset import DictDataset 
+from dataset.soil_gen_dataset import DictDataset 
 
 def parse_arg():
     parser = argparse.ArgumentParser(description='SoilSpecLLM Spectral Generation Training') 
@@ -97,4 +97,5 @@ def main():
 
 if __name__ == '__main__': 
     main()
+
 

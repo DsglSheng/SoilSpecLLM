@@ -12,7 +12,7 @@ import gc
 from diffusers import DDPMScheduler
 from torch.utils.data import DataLoader
 from diffusers import DDPMScheduler
-from dataset.mimic_iv_ecg_dataset import DictDataset
+from dataset.soil_gen_dataset import DictDataset
 
 
 def parse_arg():
@@ -385,3 +385,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
