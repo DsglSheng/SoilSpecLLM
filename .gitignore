@@ -71,3 +71,11 @@ dataset/**
 
 # Optional local ops scripts (not core paper code)
 check-timellm311/
+check_csv_data.py
+download_bert.py
+download_comparison_models.py
+sync_simple.bat
+sync_to_server.py
+upload_models.py
+visualize_all_samples.py
+格式处理.txt
