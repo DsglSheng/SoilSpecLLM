@@ -120,7 +120,7 @@ if (-not $SkipInitialCommit) {
     Invoke-Git -GitArgs @("add", "-A")
     Test-StagedLargeFiles
 
-    $hasStagedChanges = (& git diff --cached --name-only)
+    $hasStagedChanges = @(& git diff --cached --name-only)
     if ($hasStagedChanges.Count -gt 0) {
         Invoke-Git -GitArgs @("commit", "-m", $InitialCommitMessage)
         $hasCommit = $true
