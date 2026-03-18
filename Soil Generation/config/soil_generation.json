@@ -1,0 +1,33 @@
+﻿{
+  "meta": {
+    "exp_name": "SoilSpecLLM-Generation",
+    "exp_type": "soil_generation",
+    "condition": false,
+    "vae_latent": true,
+    "device": "cuda:0"
+  },
+  "dependencies": {
+    "dataset_path": "./prerequisites/soil/train_dataset.pt",
+    "checkpoints_dir": "./checkpoints",
+    "vae_path": "./vae/vae_best_100_09_15.pt"
+  },
+  "hyper_para": {
+    "epochs": 300,
+    "lr": 1e-4,
+    "batch_size": 512,
+    "num_train_steps": 300,
+    "unet_kernel_size": 7,
+    "unet_num_level": 7,
+    "beta_start": 0.00085,
+    "beta_end": 0.0120
+  },
+  "inference_setting": {
+    "inference_timestep": 300,
+    "gen_batch": 128,
+    "save_img": true,
+    "verbose": false,
+    "dataset_path": "./prerequisites/soil/test_dataset.pt",
+    "save_path": "./results/soil_generation",
+    "unet_path": "./checkpoints/soil_generation/unet_best.pth"
+  }
+}

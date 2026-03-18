@@ -1,0 +1,9 @@
+﻿torch
+diffusers
+numpy
+pandas
+matplotlib
+tqdm
+scipy
+scikit-learn
+wfdb

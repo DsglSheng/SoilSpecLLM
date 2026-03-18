@@ -1,0 +1,11 @@
+﻿__pycache__/
+*.pyc
+checkpoints/
+results/
+prerequisites/
+*.pt
+*.pth
+*.png
+*.jpg
+*.jpeg
+*.pdf

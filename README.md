@@ -25,4 +25,4 @@ The method is designed for global-scale soil spectral data and targets:
 ## Repository Layout
 
 - `Soil Prediction/`: complete spectral prediction code package used for this paper release.
-
+- `Soil Generation/`: diffusion-based spectral generation code package for soil spectrum synthesis.

@@ -5,5 +5,9 @@
 !LICENSE
 !Soil Prediction/
 !Soil Prediction/**
+!Soil Generation/
+!Soil Generation/**
 Soil Prediction/**/__pycache__/
 Soil Prediction/**/*.pyc
+Soil Generation/**/__pycache__/
+Soil Generation/**/*.pyc
